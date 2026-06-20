@@ -1374,21 +1374,23 @@ What's your number? → [add your link here]
 
     // ── TOTAL VISITS: increment on every page load ──
     const totalRef = ref(db, 'totalVisits');
-    runTransaction(totalRef, current => (current || 0) + 1);
+    runTransaction(totalRef, current => (current || 0) + 1)
+      .catch(err => console.error('[Firebase] totalVisits transaction error:', err));
+
     onValue(totalRef, snap => {
-      const n = snap.val() || 0;
-      document.getElementById('totalCount').textContent = n.toLocaleString();
-    }, { onlyOnce: false });
+      document.getElementById('totalCount').textContent = (snap.val() || 0).toLocaleString();
+    }, err => console.error('[Firebase] totalVisits read error:', err));
 
     // ── LIVE VISITORS: presence via onDisconnect ────
     const visitorsRef = ref(db, 'visitors');
     const myRef = push(visitorsRef);
     onDisconnect(myRef).remove();
-    set(myRef, true);
+    set(myRef, true)
+      .catch(err => console.error('[Firebase] visitor set error:', err));
 
     onValue(visitorsRef, snap => {
-      document.getElementById('liveCount').textContent = snap.numChildren();
-    });
+      document.getElementById('liveCount').textContent = snap.size;
+    }, err => console.error('[Firebase] visitors read error:', err));
   </script>
 </body>
 
