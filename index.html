@@ -1192,8 +1192,32 @@
       applyPaniniState(opt);
     });
 
-    // Init Panini state for the default currency on load
-    applyPaniniState(document.getElementById('currency').options[0]);
+    // Init currency from browser locale, then apply Panini state
+    function detectCurrency() {
+      const lang = navigator.language || 'en-US';
+      const country = (lang.split('-')[1] || '').toUpperCase();
+      const countryMap = {
+        GB: '£',
+        AU: 'A$', CA: 'CA$', ZA: 'R',
+        DE: '€', FR: '€', ES: '€', IT: '€', NL: '€', BE: '€',
+        AT: '€', PT: '€', IE: '€', FI: '€', GR: '€', LU: '€',
+        SI: '€', SK: '€', MT: '€', CY: '€', EE: '€', LV: '€', LT: '€'
+      };
+      if (countryMap[country]) return countryMap[country];
+      const langMap = { de: '€', fr: '€', es: '€', it: '€', nl: '€' };
+      return langMap[lang.split('-')[0]] || '$';
+    }
+
+    (function () {
+      const detected = detectCurrency();
+      const sel = document.getElementById('currency');
+      const match = Array.from(sel.options).find(o => o.value === detected);
+      if (match) {
+        sel.value = detected;
+        document.getElementById('packPrice').value = match.dataset.default;
+      }
+      applyPaniniState(sel.options[sel.selectedIndex]);
+    })();
 
     document.getElementById('paniniService').addEventListener('change', () => {
       const show = document.getElementById('paniniService').checked;
