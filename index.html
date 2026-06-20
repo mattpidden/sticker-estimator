@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>World Cup Sticker Cost Estimator</title>
+  <title>Sticker Math</title>
   <meta name="description"
     content="How much will it REALLY cost you to complete the World Cup 2026 Panini sticker album? Personalised probability math — enter your collection and find out.">
   <meta property="og:title" content="World Cup 2026 Panini Sticker Completion Simulator">
@@ -85,7 +85,9 @@
       color: var(--slate);
     }
 
-    .live-stats .stat-sep { opacity: 0.3; }
+    .live-stats .stat-sep {
+      opacity: 0.3;
+    }
 
     .live-dot {
       display: inline-block;
@@ -99,8 +101,17 @@
     }
 
     @keyframes livepulse {
-      0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(34,197,94,0.5); }
-      50%       { opacity: 0.7; box-shadow: 0 0 0 4px rgba(34,197,94,0); }
+
+      0%,
+      100% {
+        opacity: 1;
+        box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.5);
+      }
+
+      50% {
+        opacity: 0.7;
+        box-shadow: 0 0 0 4px rgba(34, 197, 94, 0);
+      }
     }
 
     /* ── LAYOUT ──────────────────────────────────── */
@@ -686,6 +697,94 @@
       color: #cbd5e1;
     }
 
+    /* ── PROMO CARD ─────────────────────────────── */
+    .promo-card {
+      background: linear-gradient(135deg, rgba(212, 175, 55, 0.08) 0%, rgba(212, 175, 55, 0.03) 100%);
+      border: 1.5px solid rgba(212, 175, 55, 0.25);
+      border-radius: var(--radius);
+      padding: 24px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .promo-icon {
+      font-size: 2.8rem;
+      flex-shrink: 0;
+    }
+
+    .promo-body {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .promo-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--gold);
+      margin-bottom: 4px;
+    }
+
+    .promo-title {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+
+    .promo-desc {
+      font-size: 0.85rem;
+      color: var(--slate);
+    }
+
+    .promo-btns {
+      display: flex;
+      gap: 8px;
+      margin-top: 14px;
+      flex-wrap: wrap;
+    }
+
+    .btn-promo-web {
+      padding: 9px 18px;
+      border-radius: 10px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      cursor: pointer;
+      border: none;
+      background: linear-gradient(135deg, var(--gold) 0%, var(--gold2) 100%);
+      color: #0d1b2a;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .btn-promo-ios {
+      padding: 9px 18px;
+      border-radius: 10px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      cursor: pointer;
+      border: 1.5px solid rgba(255, 255, 255, 0.15);
+      background: transparent;
+      color: #fff;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .btn-promo-ios:hover {
+      border-color: rgba(255, 255, 255, 0.35);
+    }
+
+    @media (max-width: 480px) {
+      .promo-card {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+      }
+    }
+
     /* ── FOOTER ──────────────────────────────────── */
     footer {
       text-align: center;
@@ -760,7 +859,7 @@
 
   <div class="hero">
     <div class="hero-emoji">⚽🏆</div>
-    <h1>World Cup Sticker Cost Estimator</h1>
+    <h1>Sticker Math</h1>
     <p>Experts say completing the Panini album costs <strong>$2,000+</strong>. What's <em>your</em> number? Enter your
       collection and get a personalised cost estimate using real probability math.</p>
     <div class="live-stats">
@@ -1007,6 +1106,20 @@
       </div>
     </div>
 
+    <!-- ═══ PROMO ══════════════════════════════════════ -->
+    <div class="promo-card">
+      <div class="promo-icon">🏆</div>
+      <div class="promo-body">
+        <div class="promo-label">From the same creator</div>
+        <div class="promo-title">The Picks — World Cup 2026 Predictor</div>
+        <div class="promo-desc">Predict every match, track your score against friends, and follow the tournament. Free to play.</div>
+        <div class="promo-btns">
+          <a class="btn-promo-web" href="https://thepicksapp.com" target="_blank" rel="noopener">Play on Web</a>
+          <a class="btn-promo-ios" href="https://apps.apple.com/gb/app/the-picks-world-cup-2026/id1605389650" target="_blank" rel="noopener">📱 iOS App</a>
+        </div>
+      </div>
+    </div>
+
   </div><!-- /main -->
 
   <footer>
@@ -1194,7 +1307,7 @@
 My collector type: "${personalityTitle}"
 
 What's your number? → stickermath.com
-#PaniniWC2026 #StickerSimulator`
+#PaniniWC2026 #StickerMath`
       );
     }
 
@@ -1329,7 +1442,7 @@ What's your number? → stickermath.com
     async function handleShare() {
       if (navigator.share) {
         try {
-          await navigator.share({ title: 'World Cup Sticker Cost Estimator', text: lastShareText });
+          await navigator.share({ title: 'Sticker Math', text: lastShareText });
           return;
         } catch (e) {
           if (e.name === 'AbortError') return; // user dismissed the sheet
@@ -1370,7 +1483,7 @@ What's your number? → stickermath.com
     };
 
     const app = initializeApp(firebaseConfig);
-    const db  = getDatabase(app);
+    const db = getDatabase(app);
 
     // ── TOTAL VISITS: increment on every page load ──
     const totalRef = ref(db, 'totalVisits');
