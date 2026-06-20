@@ -1509,10 +1509,13 @@ What's your number? → stickermath.com
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
 
-    // ── TOTAL VISITS: increment on every page load ──
+    // ── TOTAL VISITS: increment once per session (not on refresh) ──
     const totalRef = ref(db, 'totalVisits');
-    runTransaction(totalRef, current => (current || 0) + 1)
-      .catch(err => console.error('[Firebase] totalVisits transaction error:', err));
+    if (!sessionStorage.getItem('counted')) {
+      sessionStorage.setItem('counted', '1');
+      runTransaction(totalRef, current => (current || 0) + 1)
+        .catch(err => console.error('[Firebase] totalVisits transaction error:', err));
+    }
 
     onValue(totalRef, snap => {
       document.getElementById('totalCount').textContent = (snap.val() || 0).toLocaleString();
