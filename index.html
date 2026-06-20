@@ -1,0 +1,1323 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>World Cup Sticker Cost Estimator</title>
+  <meta name="description"
+    content="How much will it REALLY cost you to complete the World Cup 2026 Panini sticker album? Personalised probability math — enter your collection and find out.">
+  <meta property="og:title" content="World Cup 2026 Panini Sticker Completion Simulator">
+  <meta property="og:description"
+    content="Experts say it costs $2,000+ to finish the album. What's YOUR number? Get a personalised estimate with real probability math.">
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --navy: #0d1b2a;
+      --navy2: #1a3050;
+      --gold: #d4af37;
+      --gold2: #f0d060;
+      --slate: #94a3b8;
+      --green-d: #14532d;
+      --green-m: #15803d;
+      --blue-d: #1e3a8a;
+      --blue-m: #1d4ed8;
+      --red-d: #7f1d1d;
+      --red-m: #b91c1c;
+      --radius: 16px;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--navy);
+      color: #fff;
+      min-height: 100vh;
+      line-height: 1.5;
+    }
+
+    /* ── HEADER ─────────────────────────────────── */
+    .hero {
+      background: linear-gradient(160deg, #0a1520 0%, #1a3050 100%);
+      border-bottom: 3px solid var(--gold);
+      padding: 48px 20px 40px;
+      text-align: center;
+    }
+
+    .hero-emoji {
+      font-size: 56px;
+      line-height: 1;
+      margin-bottom: 16px;
+    }
+
+    .hero h1 {
+      font-size: clamp(1.6rem, 5vw, 2.8rem);
+      font-weight: 800;
+      color: var(--gold);
+      letter-spacing: -0.5px;
+      margin-bottom: 12px;
+    }
+
+    .hero p {
+      color: var(--slate);
+      font-size: clamp(0.95rem, 2.5vw, 1.1rem);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .hero strong {
+      color: #fff;
+    }
+
+    /* ── LAYOUT ──────────────────────────────────── */
+    .main {
+      max-width: 820px;
+      margin: 0 auto;
+      padding: 24px 16px 60px;
+    }
+
+    /* ── CARDS ───────────────────────────────────── */
+    .card {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.09);
+      border-radius: var(--radius);
+      padding: 24px;
+      margin-bottom: 20px;
+    }
+
+    .card-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--gold);
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* ── FORM ────────────────────────────────────── */
+    label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--slate);
+      margin-bottom: 6px;
+    }
+
+    .field {
+      margin-bottom: 20px;
+    }
+
+    .sticker-display {
+      text-align: center;
+      font-size: 3.5rem;
+      font-weight: 800;
+      color: var(--gold);
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+
+    .sticker-sub {
+      text-align: center;
+      font-size: 0.9rem;
+      color: var(--slate);
+      margin-bottom: 16px;
+    }
+
+    input[type="range"] {
+      -webkit-appearance: none;
+      width: 100%;
+      height: 8px;
+      background: rgba(255, 255, 255, 0.12);
+      border-radius: 4px;
+      outline: none;
+      cursor: pointer;
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 28px;
+      height: 28px;
+      background: linear-gradient(135deg, var(--gold), var(--gold2));
+      border-radius: 50%;
+      box-shadow: 0 2px 8px rgba(212, 175, 55, 0.5);
+      cursor: pointer;
+    }
+
+    input[type="range"]::-moz-range-thumb {
+      width: 28px;
+      height: 28px;
+      background: linear-gradient(135deg, var(--gold), var(--gold2));
+      border-radius: 50%;
+      border: none;
+      cursor: pointer;
+    }
+
+    .range-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.75rem;
+      color: var(--slate);
+      margin-top: 6px;
+    }
+
+    .row {
+      display: flex;
+      gap: 12px;
+    }
+
+    .row>* {
+      flex: 1;
+    }
+
+    input[type="number"],
+    select {
+      background: rgba(255, 255, 255, 0.07);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 10px;
+      color: #fff;
+      padding: 11px 14px;
+      font-size: 1rem;
+      width: 100%;
+      -moz-appearance: textfield;
+    }
+
+    input[type="number"]::-webkit-outer-spin-button,
+    input[type="number"]::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+    }
+
+    input[type="number"]:focus,
+    select:focus {
+      outline: none;
+      border-color: var(--gold);
+    }
+
+    select option {
+      background: #1a3050;
+    }
+
+    select {
+      cursor: pointer;
+    }
+
+    .hint {
+      font-size: 0.8rem;
+      color: var(--slate);
+      margin-top: 5px;
+    }
+
+    .advanced-toggle {
+      background: none;
+      border: none;
+      color: var(--slate);
+      font-size: 0.85rem;
+      cursor: pointer;
+      text-decoration: underline;
+      padding: 2px 0;
+      margin-bottom: 12px;
+    }
+
+    .advanced-toggle:hover {
+      color: #fff;
+    }
+
+    .advanced-panel {
+      background: rgba(0, 0, 0, 0.25);
+      border-radius: 12px;
+      padding: 20px;
+      margin-top: 4px;
+      margin-bottom: 16px;
+    }
+
+    .advanced-panel .field {
+      margin-bottom: 14px;
+    }
+
+    .advanced-panel .field:last-child {
+      margin-bottom: 0;
+    }
+
+    .checkbox-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 14px;
+      background: rgba(212, 175, 55, 0.07);
+      border: 1px solid rgba(212, 175, 55, 0.2);
+      border-radius: 10px;
+    }
+
+    .checkbox-row input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--gold);
+      cursor: pointer;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .checkbox-row label {
+      margin: 0;
+      font-size: 0.9rem;
+      color: #e2e8f0;
+      cursor: pointer;
+    }
+
+    .checkbox-row small {
+      display: block;
+      color: var(--slate);
+      font-size: 0.8rem;
+      margin-top: 3px;
+    }
+
+    .btn-calc {
+      width: 100%;
+      padding: 16px;
+      background: linear-gradient(135deg, var(--gold) 0%, var(--gold2) 100%);
+      color: #0d1b2a;
+      border: none;
+      border-radius: 12px;
+      font-size: 1.15rem;
+      font-weight: 800;
+      cursor: pointer;
+      letter-spacing: 0.3px;
+      transition: transform 0.1s, box-shadow 0.1s;
+      box-shadow: 0 4px 20px rgba(212, 175, 55, 0.35);
+    }
+
+    .btn-calc:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 24px rgba(212, 175, 55, 0.5);
+    }
+
+    .btn-calc:active {
+      transform: translateY(0);
+    }
+
+    /* ── LOADING ─────────────────────────────────── */
+    .loading-card {
+      text-align: center;
+      padding: 48px 24px;
+    }
+
+    .spinner {
+      width: 44px;
+      height: 44px;
+      border: 4px solid rgba(212, 175, 55, 0.2);
+      border-top-color: var(--gold);
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      margin: 0 auto 16px;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .loading-card p {
+      color: var(--slate);
+    }
+
+    /* ── PROGRESS ────────────────────────────────── */
+    .progress-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 10px;
+    }
+
+    .progress-pct {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--gold);
+    }
+
+    .progress-fraction {
+      font-size: 0.9rem;
+      color: var(--slate);
+    }
+
+    .progress-track {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 100px;
+      height: 14px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      border-radius: 100px;
+      background: linear-gradient(90deg, #15803d, var(--gold), #d97706);
+      transition: width 0.9s cubic-bezier(0.4, 0, 0.2, 1);
+      width: 0%;
+    }
+
+    .progress-needed {
+      margin-top: 12px;
+      font-size: 0.95rem;
+      color: var(--slate);
+    }
+
+    .progress-needed strong {
+      color: #fff;
+    }
+
+    /* ── PERSONALITY BADGE ───────────────────────── */
+    .badge {
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      border: 2px solid rgba(212, 175, 55, 0.3);
+      background: linear-gradient(135deg, rgba(212, 175, 55, 0.08), rgba(212, 175, 55, 0.02));
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    .badge-icon {
+      font-size: 2.5rem;
+      flex-shrink: 0;
+    }
+
+    .badge-title {
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: var(--gold);
+    }
+
+    .badge-desc {
+      font-size: 0.88rem;
+      color: var(--slate);
+      margin-top: 3px;
+    }
+
+    /* ── SCENARIOS ───────────────────────────────── */
+    .scenarios {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    @media (max-width: 580px) {
+      .scenarios {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .scenario {
+      border-radius: 14px;
+      padding: 20px 16px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .scenario::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      opacity: 0.12;
+      background: radial-gradient(circle at 50% 0%, white, transparent 70%);
+    }
+
+    .scenario-lucky {
+      background: linear-gradient(160deg, var(--green-d), #166534);
+      border: 1.5px solid #16a34a;
+    }
+
+    .scenario-expected {
+      background: linear-gradient(160deg, var(--blue-d), #1e40af);
+      border: 1.5px solid #3b82f6;
+    }
+
+    .scenario-nightmare {
+      background: linear-gradient(160deg, var(--red-d), #991b1b);
+      border: 1.5px solid #ef4444;
+    }
+
+    .sc-icon {
+      font-size: 1.8rem;
+      margin-bottom: 4px;
+    }
+
+    .sc-label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      opacity: 0.75;
+    }
+
+    .sc-pct {
+      font-size: 0.7rem;
+      opacity: 0.6;
+      margin-bottom: 12px;
+    }
+
+    .sc-cost {
+      font-size: 2rem;
+      font-weight: 800;
+      line-height: 1;
+      margin: 8px 0 2px;
+    }
+
+    .sc-packs {
+      font-size: 0.85rem;
+      opacity: 0.8;
+      margin-bottom: 10px;
+    }
+
+    .sc-total {
+      font-size: 0.8rem;
+      opacity: 0.65;
+    }
+
+    .scenario-lucky .sc-cost {
+      color: #86efac;
+    }
+
+    .scenario-expected .sc-cost {
+      color: #93c5fd;
+    }
+
+    .scenario-nightmare .sc-cost {
+      color: #fca5a5;
+    }
+
+    .divider {
+      width: 40px;
+      height: 2px;
+      background: rgba(255, 255, 255, 0.15);
+      margin: 8px auto;
+    }
+
+    /* ── STATS GRID ──────────────────────────────── */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    @media (max-width: 400px) {
+      .stats {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .stat {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      border-radius: 12px;
+      padding: 16px;
+      text-align: center;
+    }
+
+    .stat-val {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: var(--gold);
+    }
+
+    .stat-lab {
+      font-size: 0.78rem;
+      color: var(--slate);
+      margin-top: 4px;
+    }
+
+    /* ── COST TABLE ──────────────────────────────── */
+    .cost-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.95rem;
+    }
+
+    .cost-table td {
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .cost-table td:last-child {
+      text-align: right;
+      font-weight: 700;
+    }
+
+    .cost-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .cost-row-total {
+      color: var(--gold);
+      font-size: 1.05rem;
+    }
+
+    .cost-row-total td {
+      border-top: 1px solid rgba(212, 175, 55, 0.3);
+      padding-top: 12px;
+    }
+
+    /* ── FUN FACT ────────────────────────────────── */
+    .fun-fact {
+      background: rgba(212, 175, 55, 0.07);
+      border-left: 4px solid var(--gold);
+      border-radius: 0 12px 12px 0;
+      padding: 14px 18px;
+      font-size: 0.9rem;
+      color: #cbd5e1;
+      line-height: 1.7;
+      margin-bottom: 20px;
+    }
+
+    .fun-fact strong {
+      color: #fff;
+    }
+
+    /* ── SHARE ───────────────────────────────────── */
+    .share-preview {
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 16px;
+      font-size: 0.9rem;
+      color: #cbd5e1;
+      line-height: 1.7;
+      white-space: pre-wrap;
+      margin-bottom: 12px;
+      font-family: inherit;
+    }
+
+    .btn-share-primary {
+      width: 100%;
+      padding: 15px;
+      border-radius: 12px;
+      font-size: 1.05rem;
+      font-weight: 800;
+      cursor: pointer;
+      border: none;
+      background: linear-gradient(135deg, var(--gold) 0%, var(--gold2) 100%);
+      color: #0d1b2a;
+      transition: transform 0.1s, box-shadow 0.1s;
+      box-shadow: 0 4px 16px rgba(212, 175, 55, 0.3);
+      margin-bottom: 10px;
+    }
+
+    .btn-share-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(212, 175, 55, 0.45);
+    }
+
+    .btn-share-primary:active {
+      transform: translateY(0);
+    }
+
+    .btn-share-primary.success {
+      background: linear-gradient(135deg, #15803d, #16a34a);
+      box-shadow: 0 4px 16px rgba(22, 163, 74, 0.3);
+      color: #fff;
+    }
+
+    .btn-copy-small {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      border-radius: 10px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1.5px solid rgba(255, 255, 255, 0.12);
+      background: transparent;
+      color: var(--slate);
+      transition: all 0.15s;
+    }
+
+    .btn-copy-small:hover {
+      border-color: rgba(255, 255, 255, 0.3);
+      color: #fff;
+    }
+
+    .btn-copy-small.copied {
+      border-color: #22c55e;
+      color: #22c55e;
+    }
+
+    /* ── EXPLAINER ───────────────────────────────── */
+    .explainer {
+      font-size: 0.88rem;
+      color: var(--slate);
+      line-height: 1.8;
+    }
+
+    .explainer strong {
+      color: #cbd5e1;
+    }
+
+    /* ── FOOTER ──────────────────────────────────── */
+    footer {
+      text-align: center;
+      padding: 40px 20px;
+      font-size: 0.8rem;
+      color: rgba(255, 255, 255, 0.2);
+      line-height: 1.8;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    /* ── ANIMATIONS ──────────────────────────────── */
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(16px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .anim {
+      animation: fadeUp 0.4s ease both;
+    }
+
+    .anim-d1 {
+      animation-delay: 0.05s;
+    }
+
+    .anim-d2 {
+      animation-delay: 0.1s;
+    }
+
+    .anim-d3 {
+      animation-delay: 0.15s;
+    }
+
+    .anim-d4 {
+      animation-delay: 0.2s;
+    }
+
+    .anim-d5 {
+      animation-delay: 0.25s;
+    }
+
+    .anim-d6 {
+      animation-delay: 0.3s;
+    }
+
+    .tag {
+      display: inline-block;
+      background: rgba(212, 175, 55, 0.15);
+      color: var(--gold);
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 100px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      vertical-align: middle;
+      margin-left: 6px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="hero">
+    <div class="hero-emoji">⚽🏆</div>
+    <h1>World Cup Sticker Cost Estimator</h1>
+    <p>Experts say completing the Panini album costs <strong>$2,000+</strong>. What's <em>your</em> number? Enter your
+      collection and get a personalised cost estimate using real probability math.</p>
+  </div>
+
+  <div class="main">
+
+    <!-- ═══ INPUT CARD ═══════════════════════════════ -->
+    <div class="card" id="inputCard">
+      <div class="card-title">📊 Your Collection</div>
+
+      <!-- Slider input -->
+      <div class="field">
+        <div class="sticker-display" id="stickerDisplay">0</div>
+        <div class="sticker-sub">unique stickers owned out of <span id="albumSizeLabel">980</span></div>
+        <input type="range" id="slider" min="0" max="980" value="0">
+        <div class="range-labels">
+          <span>0</span>
+          <span id="sliderMidLabel">490</span>
+          <span id="sliderMaxLabel">980</span>
+        </div>
+      </div>
+
+      <!-- Manual entry -->
+      <div class="row" style="margin-bottom:20px">
+        <div>
+          <label for="uniqueInput">Unique stickers (or type directly)</label>
+          <input type="number" id="uniqueInput" min="0" max="980" value="0" placeholder="e.g. 250">
+        </div>
+        <div>
+          <label for="duplicatesInput">Duplicates you have</label>
+          <input type="number" id="duplicatesInput" min="0" value="0" placeholder="0">
+          <div class="hint">Optional — used to calculate what you've already spent</div>
+        </div>
+      </div>
+
+      <!-- Price row -->
+      <div class="row" style="margin-bottom:8px">
+        <div style="flex:0 0 110px">
+          <label for="currency">Currency</label>
+          <select id="currency">
+            <option value="$" data-default="1.50" data-panini="0">$ USD</option>
+            <option value="£" data-default="1.25" data-panini="1">£ GBP</option>
+            <option value="€" data-default="1.50" data-panini="1">€ EUR</option>
+            <option value="A$" data-default="1.80" data-panini="1">A$ AUD</option>
+            <option value="CA$" data-default="2.25" data-panini="1">CA$ CAD</option>
+            <option value="R" data-default="10.00" data-panini="1">R ZAR</option>
+          </select>
+        </div>
+        <div>
+          <label for="packPrice">Price per pack</label>
+          <input type="number" id="packPrice" min="0.01" step="0.01" value="1.50">
+        </div>
+      </div>
+      <div class="hint" style="margin-bottom:20px">Pack prices vary by retailer — check yours for the most accurate
+        result</div>
+
+      <!-- Advanced -->
+      <button class="advanced-toggle" onclick="toggleAdvanced()">⚙️ Advanced settings</button>
+      <div id="advancedPanel" class="advanced-panel hidden">
+        <div class="row">
+          <div class="field">
+            <label for="albumSize">Total stickers in album</label>
+            <input type="number" id="albumSize" value="980" min="50" max="2000">
+            <div class="hint">980 stickers for WC2026 (48 teams) — check your album's inside cover to confirm</div>
+          </div>
+          <div class="field">
+            <label for="perPack">Stickers per pack</label>
+            <input type="number" id="perPack" value="7" min="1" max="20">
+          </div>
+        </div>
+        <div class="field">
+          <div class="checkbox-row" id="paniniCheckboxRow">
+            <input type="checkbox" id="paniniService" checked>
+            <label for="paniniService">
+              Use Panini's direct missing sticker service
+              <small>UK/EU: Order up to 50 missing stickers per order, max 5 orders (250 stickers total) at £0.45 each.
+                This saves you a fortune vs buying packs for the last few stickers.</small>
+            </label>
+          </div>
+          <div id="paniniUsdWarning" class="hint" style="margin-top:8px;display:none;color:#f87171">⚠️ The Panini
+            missing sticker service is not currently available in the US — unchecked for USD.</div>
+        </div>
+        <div class="field" id="paniniPriceField">
+          <label for="paniniPrice">Price per sticker (Panini direct, e.g. £0.45)</label>
+          <input type="number" id="paniniPrice" value="0.45" min="0.01" step="0.01">
+        </div>
+      </div>
+
+      <button class="btn-calc" onclick="runCalculation()">⚽ Calculate My Cost</button>
+    </div>
+
+    <!-- ═══ RESULTS ════════════════════════════════════ -->
+    <div id="results" class="hidden">
+
+      <!-- Loading -->
+      <div id="loadingCard" class="card loading-card">
+        <div class="spinner"></div>
+        <p>Running 10,000 simulated collection journeys…</p>
+        <p style="font-size:0.8rem;margin-top:6px;color:#475569">This uses the Coupon Collector's Problem</p>
+      </div>
+
+      <!-- Results content -->
+      <div id="resultsContent" class="hidden">
+
+        <!-- Progress -->
+        <div class="card anim anim-d1">
+          <div class="card-title">📈 Your Progress</div>
+          <div class="progress-header">
+            <div class="progress-pct" id="progressPct">0%</div>
+            <div class="progress-fraction" id="progressFrac">0 / 670 stickers</div>
+          </div>
+          <div class="progress-track">
+            <div class="progress-fill" id="progressFill"></div>
+          </div>
+          <div class="progress-needed" id="progressNeeded"></div>
+        </div>
+
+        <!-- Personality badge -->
+        <div class="badge anim anim-d2" id="badge">
+          <div class="badge-icon" id="badgeIcon">🆕</div>
+          <div>
+            <div class="badge-title" id="badgeTitle">Fresh Out The Wrapper</div>
+            <div class="badge-desc" id="badgeDesc">Every single pack right now is giving you new stickers.</div>
+          </div>
+        </div>
+
+        <!-- 3 scenarios -->
+        <div class="card anim anim-d3">
+          <div class="card-title">🎯 Your Three Scenarios <span class="tag">10k simulations</span></div>
+          <div class="scenarios">
+            <div class="scenario scenario-lucky">
+              <div class="sc-icon">🍀</div>
+              <div class="sc-label">Lucky</div>
+              <div class="sc-pct">1 in 10 collectors</div>
+              <div class="divider"></div>
+              <div class="sc-cost" id="luckyCost">—</div>
+              <div class="sc-packs" id="luckyPacks">— more packs</div>
+              <div class="sc-total" id="luckyTotal">— total spend</div>
+            </div>
+            <div class="scenario scenario-expected">
+              <div class="sc-icon">📊</div>
+              <div class="sc-label">Expected</div>
+              <div class="sc-pct">most likely outcome</div>
+              <div class="divider"></div>
+              <div class="sc-cost" id="expectedCost">—</div>
+              <div class="sc-packs" id="expectedPacks">— more packs</div>
+              <div class="sc-total" id="expectedTotal">— total spend</div>
+            </div>
+            <div class="scenario scenario-nightmare">
+              <div class="sc-icon">😱</div>
+              <div class="sc-label">Nightmare</div>
+              <div class="sc-pct">1 in 10 collectors</div>
+              <div class="divider"></div>
+              <div class="sc-cost" id="nightmareCost">—</div>
+              <div class="sc-packs" id="nightmarePacks">— more packs</div>
+              <div class="sc-total" id="nightmareTotal">— total spend</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Key stats -->
+        <div class="card anim anim-d4">
+          <div class="card-title">💡 The Numbers</div>
+          <div class="stats">
+            <div class="stat">
+              <div class="stat-val" id="statRemaining">—</div>
+              <div class="stat-lab">stickers still needed</div>
+            </div>
+            <div class="stat">
+              <div class="stat-val" id="statPacks">—</div>
+              <div class="stat-lab">expected packs to buy</div>
+            </div>
+            <div class="stat">
+              <div class="stat-val" id="statEfficiency">—</div>
+              <div class="stat-lab">of packs give new stickers</div>
+            </div>
+            <div class="stat">
+              <div class="stat-val" id="statCostPerNew">—</div>
+              <div class="stat-lab">effective cost per new sticker</div>
+            </div>
+          </div>
+
+          <!-- Cost breakdown table -->
+          <div style="margin-top:20px">
+            <div
+              style="font-size:0.85rem;font-weight:600;color:var(--slate);margin-bottom:10px;text-transform:uppercase;letter-spacing:0.08em">
+              Cost breakdown</div>
+            <table class="cost-table">
+              <tr>
+                <td style="color:var(--slate)">Already spent (est.)</td>
+                <td id="breakdownSpent">—</td>
+              </tr>
+              <tr>
+                <td style="color:var(--slate)">Expected additional packs</td>
+                <td id="breakdownPacks">—</td>
+              </tr>
+              <tr id="paniniRow">
+                <td style="color:var(--slate)">Panini direct order (last <span id="paniniCount">50</span>)</td>
+                <td id="breakdownPanini">—</td>
+              </tr>
+              <tr class="cost-row-total">
+                <td>Expected total <span style="font-size:0.8rem;color:var(--slate);font-weight:400">(from pocket to
+                    completion)</span></td>
+                <td id="breakdownTotal">—</td>
+              </tr>
+            </table>
+          </div>
+        </div>
+
+        <!-- Fun fact -->
+        <div class="fun-fact anim anim-d5" id="funFact"></div>
+
+        <!-- Share -->
+        <div class="card anim anim-d6">
+          <div class="card-title">📱 Share Your Result</div>
+          <div class="share-preview" id="shareText"></div>
+          <button class="btn-share-primary" id="sharePrimaryBtn" onclick="handleShare()">↗️ Share your result</button>
+          <button class="btn-copy-small" id="copyBtn" onclick="copyShare()" style="display:none">📋 Copy text to clipboard</button>
+        </div>
+
+      </div><!-- /resultsContent -->
+    </div><!-- /results -->
+
+    <!-- ═══ EXPLAINER ═══════════════════════════════════ -->
+    <div class="card">
+      <div class="card-title">🧮 How the Maths Works</div>
+      <div class="explainer">
+        <p>This tool is built on the <strong>Coupon Collector's Problem</strong> — a classic probability model. When you
+          already own <em>k</em> unique stickers from an album of <em>N</em> total, the chance that your next random
+          sticker is new is <strong>(N − k) / N</strong>.</p>
+        <p style="margin-top:10px">Getting from sticker <em>k</em> to <em>k+1</em> follows a <strong>geometric
+            distribution</strong>. We simulate this 10,000 times end-to-end using a technique called <strong>Monte Carlo
+            simulation</strong>, giving you statistically accurate lucky, expected, and nightmare percentiles — not
+          rough guesses.</p>
+        <p style="margin-top:10px">The simulation assumes stickers are distributed uniformly at random. In practice,
+          Panini may print some stickers in greater quantities, which can make the real distribution slightly harder or
+          easier than predicted.</p>
+      </div>
+    </div>
+
+  </div><!-- /main -->
+
+  <footer>
+    <p>⚽ Built with probability maths — not affiliated with Panini or FIFA</p>
+    <p>Sticker distribution assumed uniform. Actual album size may differ — check your album's inside cover.</p>
+  </footer>
+
+  <script>
+    // ═══════════════════════════════════════════════════════
+    // STATE SYNC — slider ↔ number input
+    // ═══════════════════════════════════════════════════════
+    const slider = document.getElementById('slider');
+    const uniqueInput = document.getElementById('uniqueInput');
+    const stickerDisp = document.getElementById('stickerDisplay');
+    const albumSizeLbl = document.getElementById('albumSizeLabel');
+    const sliderMid = document.getElementById('sliderMidLabel');
+    const sliderMax = document.getElementById('sliderMaxLabel');
+
+    let N = 980; // album size
+
+    function updateSliderFill() {
+      const pct = (parseInt(slider.value) / parseInt(slider.max)) * 100;
+      slider.style.background = `linear-gradient(to right, var(--gold) ${pct}%, rgba(255,255,255,0.12) ${pct}%)`;
+    }
+
+    slider.addEventListener('input', () => {
+      const v = parseInt(slider.value);
+      uniqueInput.value = v;
+      stickerDisp.textContent = v;
+      updateSliderFill();
+    });
+
+    uniqueInput.addEventListener('input', () => {
+      const v = Math.min(Math.max(parseInt(uniqueInput.value) || 0, 0), N);
+      slider.value = v;
+      stickerDisp.textContent = v;
+      updateSliderFill();
+    });
+
+    document.getElementById('albumSize').addEventListener('input', () => {
+      N = Math.max(50, parseInt(document.getElementById('albumSize').value) || 980);
+      slider.max = N;
+      albumSizeLbl.textContent = N;
+      sliderMid.textContent = Math.round(N / 2);
+      sliderMax.textContent = N;
+      uniqueInput.max = N;
+      const cur = Math.min(parseInt(uniqueInput.value) || 0, N);
+      uniqueInput.value = cur;
+      slider.value = cur;
+      stickerDisp.textContent = cur;
+      updateSliderFill();
+    });
+
+    updateSliderFill(); // initialise at 0%
+
+    function applyPaniniState(opt) {
+      const paniniAvailable = opt.dataset.panini === '1';
+      const cb = document.getElementById('paniniService');
+      cb.checked = false;
+      cb.disabled = false;
+      document.getElementById('paniniUsdWarning').style.display = paniniAvailable ? 'none' : '';
+      document.getElementById('paniniPriceField').style.display = 'none';
+      document.getElementById('paniniRow').style.display = 'none';
+    }
+
+    document.getElementById('currency').addEventListener('change', () => {
+      const sel = document.getElementById('currency');
+      const opt = sel.options[sel.selectedIndex];
+      document.getElementById('packPrice').value = opt.dataset.default;
+      applyPaniniState(opt);
+    });
+
+    // Init Panini state for the default currency on load
+    applyPaniniState(document.getElementById('currency').options[0]);
+
+    document.getElementById('paniniService').addEventListener('change', () => {
+      const show = document.getElementById('paniniService').checked;
+      document.getElementById('paniniPriceField').style.display = show ? '' : 'none';
+      document.getElementById('paniniRow').style.display = show ? '' : 'none';
+    });
+
+    function toggleAdvanced() {
+      document.getElementById('advancedPanel').classList.toggle('hidden');
+    }
+
+    // ═══════════════════════════════════════════════════════
+    // SIMULATION ENGINE
+    // ═══════════════════════════════════════════════════════
+
+    /**
+     * Monte Carlo coupon-collector simulation.
+     * Returns the number of additional sticker draws needed to go from k unique to target unique,
+     * for one trial, using the geometric distribution inverse-CDF method.
+     */
+    function singleTrial(logQ, startBonus) {
+      let draws = startBonus;
+      const len = logQ.length;
+      for (let j = 0; j < len; j++) {
+        // Geometric(p) sample: ceil(log(U) / log(1-p))
+        // logQ[j] = log(1-p) which is negative; log(U) is also negative → result > 0
+        draws += Math.ceil(Math.log(Math.random()) / logQ[j]);
+      }
+      return draws;
+    }
+
+    function simulate(albumN, owned, trials) {
+      const usePanini = document.getElementById('paniniService').checked;
+      const paniniLimit = 250; // 50 stickers × 5 orders max
+      const paniniPrice = parseFloat(document.getElementById('paniniPrice').value) || 0.45;
+
+      // If using Panini service we only simulate until (N - paniniLimit) unique stickers
+      const target = usePanini ? Math.max(owned, albumN - paniniLimit) : albumN;
+      const paniniCount = usePanini ? (albumN - target) : 0;
+      const paniniCost = paniniCount * paniniPrice;
+
+      // Already complete (or at/past target)
+      if (owned >= albumN) return { p10: 0, p25: 0, p50: 0, p75: 0, p90: 0, p95: 0, paniniCost, paniniCount, done: true };
+      if (owned >= target) return { p10: 0, p25: 0, p50: 0, p75: 0, p90: 0, p95: 0, paniniCost, paniniCount, done: false };
+
+      // Pre-compute log(1-p_i) for stages i = startI … target-1
+      // p_i = (N-i)/N  →  1-p_i = i/N  →  log(1-p_i) = log(i/N)
+      const startI = Math.max(owned, 1);
+      const startBonus = (owned === 0) ? 1 : 0; // the very first sticker is always new
+      const stages = target - startI;
+      const logQ = new Float64Array(stages);
+      for (let i = 0; i < stages; i++) {
+        logQ[i] = Math.log((startI + i) / albumN);
+      }
+
+      const results = new Int32Array(trials);
+      for (let t = 0; t < trials; t++) {
+        results[t] = singleTrial(logQ, startBonus);
+      }
+      results.sort(); // TypedArray sorts numerically by default
+
+      return {
+        p10: results[Math.floor(trials * 0.10)],
+        p25: results[Math.floor(trials * 0.25)],
+        p50: results[Math.floor(trials * 0.50)],
+        p75: results[Math.floor(trials * 0.75)],
+        p90: results[Math.floor(trials * 0.90)],
+        p95: results[Math.floor(trials * 0.95)],
+        paniniCost,
+        paniniCount,
+        done: false
+      };
+    }
+
+    // ═══════════════════════════════════════════════════════
+    // CONTENT GENERATORS
+    // ═══════════════════════════════════════════════════════
+
+    function getPersonality(owned, albumN) {
+      const pct = owned / albumN;
+      if (owned >= albumN) return { icon: '🏆', title: 'Album Complete!', desc: 'You absolute legend. The album is finished. Now frame it.' };
+      if (pct >= 0.90) return { icon: '🎯', title: 'The Final Countdown', desc: 'So close, yet the duplicate pile grows daily. The cruelest phase.' };
+      if (pct >= 0.70) return { icon: '🔥', title: 'On the Home Straight', desc: 'Nearly there — but the probability maths is about to turn brutal on you.' };
+      if (pct >= 0.50) return { icon: '⚡', title: 'Halfway Hero', desc: 'Half done! Enjoy this moment. The really expensive part is still ahead.' };
+      if (pct >= 0.30) return { icon: '📦', title: 'Committed Collector', desc: "You're past the point of no return. The album will be finished. It must." };
+      if (pct >= 0.10) return { icon: '🌱', title: 'Just Getting Started', desc: "Still in the easy zone — nearly every pack is a hit. Don't get cocky." };
+      return { icon: '🆕', title: 'Fresh Out The Wrapper', desc: 'Every single pack right now is pure new stickers. Pure joy. Pure chaos.' };
+    }
+
+    function getFunFacts(owned, albumN, expCostMore, nightmareCostMore, alreadySpent, packPrice, cur, perPack) {
+      const remaining = albumN - owned;
+      const expTotal = alreadySpent + expCostMore;
+      const facts = [
+        `That final sticker? To find it at random you'd need to open an average of <strong>${albumN} packs</strong> — because each pack only has a ${perPack}-in-${albumN} chance of containing it. The last few stickers are brutally expensive.`,
+        `You still need <strong>${remaining.toLocaleString()} stickers</strong>, but buying them at random means an expected <strong>${Math.round(expCostMore / packPrice).toLocaleString()} packs of ${perPack}</strong>. Probability is expensive.`,
+        `In the nightmare scenario, you'd spend <strong>${cur}${nightmareCostMore.toLocaleString(undefined, { maximumFractionDigits: 0 })}</strong> more on top of what you've already spent — enough for a return flight to one of the 2026 host cities.`,
+        `At ${cur}${expTotal.toLocaleString(undefined, { maximumFractionDigits: 0 })} total expected spend, your sticker album costs about <strong>${Math.round(expTotal / 15)} restaurant meals</strong>. Worth it? That's for you to decide.`,
+        `The Panini direct order service (up to 250 stickers across 5 orders) could save you hundreds in the final stretch — because buying those last stickers via random packs is catastrophically inefficient.`,
+      ];
+      return facts[Math.floor(Math.random() * facts.length)];
+    }
+
+    function buildShareText(owned, albumN, pct, expCostMore, nightmareCostMore, totalExpected, cur, personalityTitle) {
+      return (
+        `I'm ${pct}% through the #WorldCup2026 Panini album ⚽🏆
+
+📊 Expected extra spend: ${cur}${expCostMore.toFixed(2)}
+😱 Nightmare scenario: ${cur}${nightmareCostMore.toFixed(2)}
+💰 My total expected spend: ${cur}${totalExpected.toFixed(2)}
+
+My collector type: "${personalityTitle}"
+
+What's your number? → [add your link here]
+#PaniniWC2026 #StickerSimulator`
+      );
+    }
+
+    // ═══════════════════════════════════════════════════════
+    // MAIN CALCULATION
+    // ═══════════════════════════════════════════════════════
+
+    let lastShareText = '';
+
+    function runCalculation() {
+      const owned = Math.min(Math.max(parseInt(uniqueInput.value) || 0, 0), N);
+      const duplicates = Math.max(parseInt(document.getElementById('duplicatesInput').value) || 0, 0);
+      const packPrice = parseFloat(document.getElementById('packPrice').value) || 1.99;
+      const perPack = parseInt(document.getElementById('perPack').value) || 7;
+      const cur = document.getElementById('currency').value;
+      const totalOwned = owned + duplicates;
+      const packsEstimate = Math.ceil(totalOwned / perPack);
+      const alreadySpent = packsEstimate * packPrice;
+
+      // Show results section with loader
+      document.getElementById('results').classList.remove('hidden');
+      document.getElementById('loadingCard').classList.remove('hidden');
+      document.getElementById('resultsContent').classList.add('hidden');
+      document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+      // Run after paint (so spinner shows)
+      setTimeout(() => {
+        const TRIALS = 10000;
+        const sim = simulate(N, owned, TRIALS);
+
+        document.getElementById('loadingCard').classList.add('hidden');
+        document.getElementById('resultsContent').classList.remove('hidden');
+
+        const pct = Math.round((owned / N) * 100);
+        const remaining = N - owned;
+
+        // Helpers
+        const toPacks = (draws) => Math.ceil(draws / perPack);
+        const cost = (draws) => toPacks(draws) * packPrice + sim.paniniCost;
+        const fmt = (v) => cur + v.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        const fmtInt = (v) => cur + v.toLocaleString(undefined, { maximumFractionDigits: 0 });
+
+        const luckyCostMore = cost(sim.p10);
+        const expectedCostMore = cost(sim.p50);
+        const nightmareCostMore = cost(sim.p90);
+        const luckyTotal = alreadySpent + luckyCostMore;
+        const expectedTotal = alreadySpent + expectedCostMore;
+        const nightmareTotal = alreadySpent + nightmareCostMore;
+
+        // ── Progress
+        document.getElementById('progressPct').textContent = pct + '%';
+        document.getElementById('progressFrac').textContent = `${owned.toLocaleString()} / ${N.toLocaleString()} stickers`;
+        document.getElementById('progressFill').style.width = pct + '%';
+        if (sim.done) {
+          document.getElementById('progressNeeded').innerHTML = '🏆 <strong>Album complete!</strong> Congratulations!';
+        } else {
+          document.getElementById('progressNeeded').innerHTML =
+            `<strong>${remaining.toLocaleString()}</strong> stickers still to find — you're in the <strong>${getPhase(pct)}</strong>`;
+        }
+
+        // ── Personality
+        const p = getPersonality(owned, N);
+        document.getElementById('badgeIcon').textContent = p.icon;
+        document.getElementById('badgeTitle').textContent = p.title;
+        document.getElementById('badgeDesc').textContent = p.desc;
+
+        // ── Scenarios
+        document.getElementById('luckyCost').textContent = fmt(luckyCostMore);
+        document.getElementById('luckyPacks').textContent = `${toPacks(sim.p10).toLocaleString()} more packs`;
+        document.getElementById('luckyTotal').textContent = fmt(luckyTotal) + ' total spend';
+
+        document.getElementById('expectedCost').textContent = fmt(expectedCostMore);
+        document.getElementById('expectedPacks').textContent = `${toPacks(sim.p50).toLocaleString()} more packs`;
+        document.getElementById('expectedTotal').textContent = fmt(expectedTotal) + ' total spend';
+
+        document.getElementById('nightmareCost').textContent = fmt(nightmareCostMore);
+        document.getElementById('nightmarePacks').textContent = `${toPacks(sim.p90).toLocaleString()} more packs`;
+        document.getElementById('nightmareTotal').textContent = fmt(nightmareTotal) + ' total spend';
+
+        // ── Stats
+        const effPct = remaining > 0 ? ((remaining / N) * 100).toFixed(1) + '%' : '100%';
+        const costPerNew = remaining > 0
+          ? fmt(expectedCostMore / remaining)
+          : fmt(0);
+
+        document.getElementById('statRemaining').textContent = remaining.toLocaleString();
+        document.getElementById('statPacks').textContent = toPacks(sim.p50).toLocaleString();
+        document.getElementById('statEfficiency').textContent = effPct;
+        document.getElementById('statCostPerNew').textContent = costPerNew;
+
+        // ── Cost breakdown
+        document.getElementById('breakdownSpent').textContent = fmt(alreadySpent);
+        document.getElementById('breakdownPanini').textContent = sim.paniniCost > 0 ? fmt(sim.paniniCost) : '—';
+        document.getElementById('paniniCount').textContent = sim.paniniCount;
+        document.getElementById('paniniRow').style.display = sim.paniniCost > 0 ? '' : 'none';
+        document.getElementById('breakdownPacks').textContent = fmt(toPacks(sim.p50) * packPrice);
+        document.getElementById('breakdownTotal').textContent = fmt(expectedTotal);
+
+        // ── Fun fact
+        document.getElementById('funFact').innerHTML = getFunFacts(owned, N, expectedCostMore, nightmareCostMore, alreadySpent, packPrice, cur, perPack);
+
+        // ── Share text
+        const shareStr = buildShareText(owned, N, pct, expectedCostMore, nightmareCostMore, expectedTotal, cur, p.title);
+        document.getElementById('shareText').textContent = shareStr;
+        lastShareText = shareStr;
+
+        // On mobile (share API available): gold "Share" button + small "Copy" fallback
+        // On desktop (no share API): gold "Copy to clipboard" only, hide secondary
+        if (navigator.share) {
+          document.getElementById('sharePrimaryBtn').textContent = '↗️ Share your result';
+          document.getElementById('copyBtn').style.display = '';
+        } else {
+          document.getElementById('sharePrimaryBtn').textContent = '📋 Copy to clipboard';
+          document.getElementById('copyBtn').style.display = 'none';
+        }
+
+      }, 80);
+    }
+
+    function getPhase(pct) {
+      if (pct >= 90) return 'brutal final stretch';
+      if (pct >= 70) return 'expensive home straight';
+      if (pct >= 50) return 'second half';
+      if (pct >= 25) return 'middle section';
+      return 'honeymoon phase';
+    }
+
+    // ═══════════════════════════════════════════════════════
+    // SHARING
+    // ═══════════════════════════════════════════════════════
+
+    async function handleShare() {
+      if (navigator.share) {
+        try {
+          await navigator.share({ title: 'World Cup Sticker Cost Estimator', text: lastShareText });
+          return;
+        } catch (e) {
+          if (e.name === 'AbortError') return; // user dismissed the sheet
+        }
+      }
+      // Fallback: copy to clipboard
+      copyShare(document.getElementById('sharePrimaryBtn'));
+    }
+
+    function copyShare(btn) {
+      btn = btn || document.getElementById('copyBtn');
+      const isSmall = btn.id === 'copyBtn';
+      navigator.clipboard.writeText(lastShareText).then(() => {
+        btn.textContent = '✓ Copied!';
+        btn.classList.add(isSmall ? 'copied' : 'success');
+        setTimeout(() => {
+          btn.textContent = isSmall ? '📋 Copy text to clipboard' : '📋 Copy to clipboard';
+          btn.classList.remove(isSmall ? 'copied' : 'success');
+        }, 2500);
+      });
+    }
+  </script>
+</body>
+
+</html>
